@@ -30,6 +30,9 @@ export class InfrastructureStack extends cdk.Stack {
 
     new LambdaRestApi(this, `${id}-api`, {
       handler: lambda,
+      deployOptions: {
+        stageName: "dev",
+      },
     });
   }
 }
