@@ -21,7 +21,7 @@ export class InfrastructureStack extends cdk.Stack {
         "OhHellBackend::OhHellBackend.LambdaEntryPoint::FunctionHandlerAsync",
       code: Code.fromBucket(
         codeBucket,
-        process.env["GITHUB_SHA"] ?? "bad time"
+        `${process.env["GITHUB_SHA"]}.zip` ?? "bad time"
       ),
       environment: {
         BUCKET: dataBucket.bucketName,
