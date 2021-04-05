@@ -28,3 +28,4 @@ jobs:
         run: sh scripts/deploy.sh
         env:
           AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+          CODE_BUCKET_NAME: oh-hell-backend-artifacts
