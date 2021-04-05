@@ -1,0 +1,16 @@
+name: Deploy to Dev Environment
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: sh scripts/build.sh
+        env:
+          CI: true
