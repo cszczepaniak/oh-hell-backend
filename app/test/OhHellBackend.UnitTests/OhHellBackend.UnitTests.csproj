@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OhHellBackend.DataAccess\OhHellBackend.DataAccess.csproj" />
+    <ProjectReference Include="..\..\src\OhHellBackend.DataAccess\OhHellBackend.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
