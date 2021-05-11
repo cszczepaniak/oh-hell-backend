@@ -24,7 +24,7 @@ jobs:
           aws-region: us-east-2
       - name: Publish Artifact
         run: sh scripts/publish.sh
-      - name: Deploy Website
+      - name: Deploy API
         run: sh scripts/deploy.sh
         env:
           AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}

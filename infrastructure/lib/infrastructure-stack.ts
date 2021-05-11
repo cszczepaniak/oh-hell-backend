@@ -16,15 +16,15 @@ export class InfrastructureStack extends cdk.Stack {
     const dataBucket = new Bucket(this, `${id}-data-bucket`);
 
     const lambda = new Function(this, `${id}-lambda`, {
-      runtime: Runtime.DOTNET_CORE_3_1,
-      handler:
-        "OhHellBackend::OhHellBackend.LambdaEntryPoint::FunctionHandlerAsync",
+      runtime: Runtime.GO_1_X,
+      handler: "oh-hell-backend",
       code: Code.fromBucket(
         codeBucket,
         `${process.env["GITHUB_SHA"]}.zip` ?? "bad time"
       ),
       environment: {
         BUCKET: dataBucket.bucketName,
+        GIN_MODE: "release",
       },
     });
 
