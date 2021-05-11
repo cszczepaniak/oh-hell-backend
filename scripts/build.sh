@@ -1,6 +1,5 @@
 set -ex
-source ./scripts/utils.sh
-download_deps
+go get golang.org/x/tools/cmd/stringer@latest
 
 cd app/
 make
