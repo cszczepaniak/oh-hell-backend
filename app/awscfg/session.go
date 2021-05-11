@@ -13,6 +13,7 @@ var (
 	EnvAccessKeyId     = `AWS_ACCESS_KEY_ID`
 	EnvSecretAccessKey = `AWS_SECRET_ACCESS_KEY`
 	EnvRegion          = `AWS_REGION`
+	EnvSessionToken    = `AWS_SESSION_TOKEN`
 )
 
 func Connect() (*session.Session, error) {
@@ -28,7 +29,7 @@ func Connect() (*session.Session, error) {
 			Credentials: credentials.NewStaticCredentials(
 				id,
 				secret,
-				"", // a token will be created when the session is used
+				os.Getenv(EnvSessionToken),
 			),
 		})
 	if err != nil {
