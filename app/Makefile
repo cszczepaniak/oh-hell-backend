@@ -5,6 +5,10 @@ all: test build
 build:
 	go build -tags prod
 
+.PHONY: gen
+gen:
+	go generate ./...
+
 .PHONY: test
 test:
 	go test ./...
