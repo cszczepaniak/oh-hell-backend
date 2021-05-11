@@ -30,6 +30,7 @@ export class InfrastructureStack extends cdk.Stack {
     });
 
     dataBucket.grantReadWrite(lambda);
+    dataBucket.grantPut(lambda);
 
     new LambdaRestApi(this, `${id}-api`, {
       handler: lambda,

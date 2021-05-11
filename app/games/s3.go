@@ -41,6 +41,7 @@ func (sp *S3Persistence) Save(g Game) (int64, error) {
 	if err != nil {
 		return -1, err
 	}
+
 	uploader := s3manager.NewUploader(sp.session)
 	_, err = uploader.Upload(&s3manager.UploadInput{
 		Key:         aws.String(fmt.Sprintf(`games/%d`, g.Id)),
