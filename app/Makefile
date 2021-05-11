@@ -3,8 +3,11 @@ all: test build
 
 .PHONY: build
 build:
-	go generate ./...
 	go build -tags prod
+
+.PHONY: gen
+gen:
+	go generate ./...
 
 .PHONY: test
 test:
