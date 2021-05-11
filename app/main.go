@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"log"
 	"net/http"
 	"os"
@@ -9,20 +10,11 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
-	"github.com/gin-gonic/gin"
+	"github.com/cszczepaniak/oh-hell-backend/games"
+	"github.com/cszczepaniak/oh-hell-backend/server"
 )
 
 var ginLambda *ginadapter.GinLambda
-
-func init() {
-	// stdout and stderr are sent to AWS CloudWatch Logs
-	if inLambda() {
-		log.Printf("Gin cold start")
-		r := setupRouter()
-
-		ginLambda = ginadapter.New(r)
-	}
-}
 
 func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	// If no name is provided in the HTTP request body, throw an error
@@ -36,21 +28,25 @@ func inLambda() bool {
 	return false
 }
 
-func setupRouter() *gin.Engine {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	return r
+func main() {
+	log.Fatal(run())
 }
 
-func main() {
-	if inLambda() {
-		lambda.Start(Handler)
-	} else {
-		r := setupRouter()
-		log.Fatal(http.ListenAndServe(`:8080`, r))
+func run() error {
+	bucket, ok := os.LookupEnv(`BUCKET`)
+	if !ok {
+		return errors.New(`expected environment variable BUCKET to be set`)
 	}
+	gp, err := games.NewS3Persistence(bucket)
+	if err != nil {
+		return err
+	}
+	s := server.New(gp)
+	s.ConfigureRoutes()
+	if inLambda() {
+		ginLambda = ginadapter.New(s.Router)
+		lambda.Start(Handler)
+		return nil
+	}
+	return http.ListenAndServe(`:8080`, s.Router)
 }
