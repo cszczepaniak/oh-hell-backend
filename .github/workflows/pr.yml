@@ -1,4 +1,4 @@
-name: Deploy to Dev Environment
+name: Pull Request Build
 
 on:
   pull_request:
