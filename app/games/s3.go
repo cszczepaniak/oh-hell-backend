@@ -43,7 +43,7 @@ func (sp *S3Persistence) Save(g Game) (int64, error) {
 		log.Println(err)
 		return -1, err
 	}
-
+	log.Println(`about to save the game`)
 	uploader := s3manager.NewUploader(sp.session)
 	_, err = uploader.Upload(&s3manager.UploadInput{
 		Key:         aws.String(fmt.Sprintf(`games/%d`, g.Id)),
@@ -51,6 +51,7 @@ func (sp *S3Persistence) Save(g Game) (int64, error) {
 		ContentType: aws.String(`application/json`),
 		Body:        bytes.NewReader(bs),
 	})
+	log.Println(`saved the game`)
 	if err != nil {
 		log.Println(err)
 		return -1, err

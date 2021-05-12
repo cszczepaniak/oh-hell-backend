@@ -15,6 +15,7 @@ func (s *Server) AddGamesRoutes() {
 }
 
 func (s *Server) handleSaveGame(c *gin.Context) {
+	log.Println(`inside of save game handler`)
 	var g games.Game
 	err := c.BindJSON(&g)
 	if err != nil {
