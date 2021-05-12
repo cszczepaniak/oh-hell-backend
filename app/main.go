@@ -21,6 +21,15 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 	return ginLambda.ProxyWithContext(ctx, req)
 }
 
+func init() {
+	if inLambda() {
+		gp, _ := games.NewS3Persistence(os.Getenv(`BUCKET`))
+		s := server.New(gp)
+		s.ConfigureRoutes()
+		ginLambda = ginadapter.New(s.Router)
+	}
+}
+
 func inLambda() bool {
 	if lambdaTaskRoot := os.Getenv("LAMBDA_TASK_ROOT"); lambdaTaskRoot != "" {
 		return true
@@ -33,6 +42,10 @@ func main() {
 }
 
 func run() error {
+	if inLambda() {
+		lambda.Start(Handler)
+		return nil
+	}
 	bucket, ok := os.LookupEnv(`BUCKET`)
 	if !ok {
 		return errors.New(`expected environment variable BUCKET to be set`)
@@ -43,10 +56,5 @@ func run() error {
 	}
 	s := server.New(gp)
 	s.ConfigureRoutes()
-	if inLambda() {
-		ginLambda = ginadapter.New(s.Router)
-		lambda.Start(Handler)
-		return nil
-	}
 	return http.ListenAndServe(`:8080`, s.Router)
 }
