@@ -1,6 +1,6 @@
 import { LambdaRestApi } from "@aws-cdk/aws-apigateway";
 import { Code, Function, Runtime } from "@aws-cdk/aws-lambda";
-import { AnyPrincipal, Role } from "@aws-cdk/aws-iam";
+import { ServicePrincipal, Role } from "@aws-cdk/aws-iam";
 import { Bucket } from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
 
