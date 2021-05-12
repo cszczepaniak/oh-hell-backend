@@ -1,6 +1,7 @@
 package server
 
 import (
+	"log"
 	"strconv"
 
 	"github.com/cszczepaniak/oh-hell-backend/games"
@@ -17,11 +18,13 @@ func (s *Server) handleSaveGame(c *gin.Context) {
 	var g games.Game
 	err := c.BindJSON(&g)
 	if err != nil {
+		log.Println(err)
 		c.String(400, `invalid game in body: %s`, err)
 		return
 	}
 	id, err := s.Persistence.Games.Save(g)
 	if err != nil {
+		log.Println(err)
 		c.String(400, `error saving game: %s`, err)
 		return
 	}

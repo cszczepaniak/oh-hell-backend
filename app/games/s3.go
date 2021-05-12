@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -39,6 +40,7 @@ func (sp *S3Persistence) Save(g Game) (int64, error) {
 	g.Id = time.Now().UnixNano()
 	bs, err := json.Marshal(g)
 	if err != nil {
+		log.Println(err)
 		return -1, err
 	}
 
@@ -50,6 +52,7 @@ func (sp *S3Persistence) Save(g Game) (int64, error) {
 		Body:        bytes.NewReader(bs),
 	})
 	if err != nil {
+		log.Println(err)
 		return -1, err
 	}
 	return g.Id, nil
