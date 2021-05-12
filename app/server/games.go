@@ -29,8 +29,12 @@ func (s *Server) handleSaveGame(c *gin.Context) {
 	// 	c.String(400, `error saving game: %s`, err)
 	// 	return
 	// }
+	c.Header("Content-Type", "application/json")
 	c.Header("Access-Control-Allow-Origin", "*")
-	c.String(200, `game saved: %d`, 123)
+	c.Header("Allow", "GET, OPTIONS, POST")
+	c.Header("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
+	c.Header("Access-Control-Allow-Headers", "*")
+	c.Status(200)
 }
 
 func (s *Server) handleGetGame(c *gin.Context) {
