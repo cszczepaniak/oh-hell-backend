@@ -38,8 +38,8 @@ func (s *Server) ConfigureRoutes() {
 		}
 		c.String(http.StatusOK, msg.Message)
 	})
-
-	s.AddGamesRoutes()
+	s.Router.POST("/games", s.handleSaveGame)
+	s.Router.GET("/games/:id", s.handleGetGame)
 }
 
 type Persistence struct {
