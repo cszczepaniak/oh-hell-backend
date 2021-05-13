@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/Bowery/prompt v0.0.0-20190419144237-972d0ceb96f5 // indirect
 	github.com/Joker/jade v1.0.0 // indirect
+	github.com/apex/gateway v1.1.2 // indirect
 	github.com/aws/aws-lambda-go v1.23.0
 	github.com/aws/aws-sdk-go v1.38.37 // indirect
 	github.com/awslabs/aws-lambda-go-api-proxy v0.10.0

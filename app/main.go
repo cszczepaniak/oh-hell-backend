@@ -1,26 +1,16 @@
 package main
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
-	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
+	"github.com/apex/gateway"
 	"github.com/cszczepaniak/oh-hell-backend/games"
 	"github.com/cszczepaniak/oh-hell-backend/server"
 )
-
-var ginLambda *ginadapter.GinLambda
-
-func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	// If no name is provided in the HTTP request body, throw an error
-	return ginLambda.ProxyWithContext(ctx, req)
-}
 
 func inLambda() bool {
 	if lambdaTaskRoot := os.Getenv("LAMBDA_TASK_ROOT"); lambdaTaskRoot != "" {
@@ -46,9 +36,7 @@ func run() error {
 	s := server.New(gp)
 	s.ConfigureRoutes()
 	if inLambda() {
-		ginLambda = ginadapter.New(s.Router)
-		lambda.Start(Handler)
-		return nil
+		return gateway.ListenAndServe(`:8080`, s.Router)
 	}
 	return http.ListenAndServe(`:8080`, s.Router)
 }
