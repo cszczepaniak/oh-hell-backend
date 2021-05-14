@@ -2,6 +2,7 @@ package server
 
 import (
 	"log"
+	"net/http"
 	"strconv"
 
 	"github.com/cszczepaniak/oh-hell-backend/games"
@@ -23,18 +24,13 @@ func (s *Server) handleSaveGame(c *gin.Context) {
 		c.String(400, `invalid game in body: %s`, err)
 		return
 	}
-	// id, err := s.Persistence.Games.Save(g)
-	// if err != nil {
-	// 	log.Println(err)
-	// 	c.String(400, `error saving game: %s`, err)
-	// 	return
-	// }
-	c.Header("Content-Type", "application/json")
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.Header("Allow", "GET, OPTIONS, POST")
-	c.Header("Access-Control-Allow-Methods", "GET, OPTIONS, POST")
-	c.Header("Access-Control-Allow-Headers", "*")
-	c.Status(200)
+	id, err := s.Persistence.Games.Save(g)
+	if err != nil {
+		log.Println(err)
+		c.String(400, `error saving game: %s`, err)
+		return
+	}
+	c.String(http.StatusOK, `saved game: %d`, id)
 }
 
 func (s *Server) handleGetGame(c *gin.Context) {
