@@ -11,7 +11,7 @@ import (
 
 func (s *Server) AddGamesRoutes() {
 	rg := s.Router.Group(`/games`)
-	rg.POST(`/`, s.handleSaveGame)
+	rg.POST(``, s.handleSaveGame)
 	rg.GET(`/:id`, s.handleGetGame)
 }
 
