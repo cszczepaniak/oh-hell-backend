@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -20,7 +19,6 @@ func inLambda() bool {
 }
 
 func main() {
-	fmt.Println(`made it into the lambda :)`)
 	log.Fatal(run())
 }
 

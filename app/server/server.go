@@ -5,6 +5,7 @@ import (
 
 	"github.com/cszczepaniak/oh-hell-backend/games"
 	"github.com/gin-gonic/gin"
+	cors "github.com/rs/cors/wrapper/gin"
 )
 
 type Server struct {
@@ -14,6 +15,8 @@ type Server struct {
 
 func New(gp games.GamePersistence) *Server {
 	r := gin.Default()
+	c := cors.AllowAll()
+	r.Use(c)
 	return &Server{
 		Router: r,
 		Persistence: Persistence{

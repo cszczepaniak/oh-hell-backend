@@ -15,10 +15,6 @@ export class InfrastructureStack extends cdk.Stack {
     );
 
     const dataBucket = new Bucket(this, `${id}-data-bucket`);
-    const executionRole = new Role(this, `${id}-exec-role`, {
-      assumedBy: new ServicePrincipal("lambda.amazonaws.com"),
-    });
-    dataBucket.grantReadWrite(executionRole);
 
     const lambda = new Function(this, `${id}-lambda`, {
       runtime: Runtime.GO_1_X,
@@ -31,8 +27,9 @@ export class InfrastructureStack extends cdk.Stack {
         BUCKET: dataBucket.bucketName,
         GIN_MODE: "release",
       },
-      role: executionRole,
     });
+
+    dataBucket.grantReadWrite(lambda);
 
     new LambdaRestApi(this, `${id}-api`, {
       handler: lambda,
