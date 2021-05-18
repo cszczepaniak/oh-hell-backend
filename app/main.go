@@ -8,6 +8,7 @@ import (
 
 	"github.com/apex/gateway"
 	"github.com/cszczepaniak/oh-hell-backend/games"
+	"github.com/cszczepaniak/oh-hell-backend/games/persistence"
 	"github.com/cszczepaniak/oh-hell-backend/s3"
 	"github.com/cszczepaniak/oh-hell-backend/server"
 )
@@ -32,7 +33,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	gp := &games.S3Persistence{
+	gp := &persistence.S3Persistence{
 		KeyFmt:      `games/%d`,
 		Client:      c,
 		IdGenerator: games.TimeStampIdGenerator{},

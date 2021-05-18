@@ -1,8 +1,9 @@
-package games
+package persistence
 
 import (
 	"testing"
 
+	"github.com/cszczepaniak/oh-hell-backend/games"
 	"github.com/cszczepaniak/oh-hell-backend/s3"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -12,12 +13,12 @@ func TestS3Persistence_Save(t *testing.T) {
 	tests := []struct {
 		keyFmt   string
 		keySetup string
-		game     Game
+		game     games.Game
 		expErr   bool
 	}{{
-		`games/%d`, `games/123`, Game{}, true,
+		`games/%d`, `games/123`, games.Game{}, true,
 	}, {
-		`games/%d`, `games/123`, Game{Id: 123}, false,
+		`games/%d`, `games/123`, games.Game{Id: 123}, false,
 	}}
 	for _, tc := range tests {
 		testGamePersistence, fakeS3 := setupPersistenceWithFakeDeps(tc.game.Id, tc.keyFmt)
@@ -45,7 +46,7 @@ func TestS3Persistence_Create(t *testing.T) {
 	for _, tc := range tests {
 		testGamePersistence, fakeS3 := setupPersistenceWithFakeDeps(tc.id, tc.keyFmt)
 		fakeS3.SetupUpload(tc.keySetup)
-		id, err := testGamePersistence.Create(Game{})
+		id, err := testGamePersistence.Create(games.Game{})
 		if tc.expErr {
 			assert.NotNil(t, err)
 			assert.Equal(t, int64(0), id)
@@ -59,13 +60,13 @@ func TestS3Persistence_Get(t *testing.T) {
 	tests := []struct {
 		keyFmt    string
 		keySetup  string
-		gameSetup Game
+		gameSetup games.Game
 		id        int64
 		expErr    bool
 	}{{
-		`games/%d`, `games/123`, Game{Id: 123, Dealer: `hello`}, 123, false,
+		`games/%d`, `games/123`, games.Game{Id: 123, Dealer: `hello`}, 123, false,
 	}, {
-		`games/%d`, `games/123`, Game{Id: 123, Dealer: `hello`}, 111, true,
+		`games/%d`, `games/123`, games.Game{Id: 123, Dealer: `hello`}, 111, true,
 	}}
 	for _, tc := range tests {
 		testGamePersistence, fakeS3 := setupPersistenceWithFakeDeps(tc.id, tc.keyFmt)
@@ -75,7 +76,7 @@ func TestS3Persistence_Get(t *testing.T) {
 		g, err := testGamePersistence.Get(tc.id)
 		if tc.expErr {
 			assert.NotNil(t, err)
-			assert.Equal(t, Game{}, g)
+			assert.Equal(t, games.Game{}, g)
 			continue
 		}
 		assert.Nil(t, err)
