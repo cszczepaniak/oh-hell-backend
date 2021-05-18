@@ -8,6 +8,8 @@ import (
 
 	"github.com/apex/gateway"
 	"github.com/cszczepaniak/oh-hell-backend/games"
+	"github.com/cszczepaniak/oh-hell-backend/games/persistence"
+	"github.com/cszczepaniak/oh-hell-backend/s3"
 	"github.com/cszczepaniak/oh-hell-backend/server"
 )
 
@@ -27,7 +29,15 @@ func run() error {
 	if !ok {
 		return errors.New(`expected environment variable BUCKET to be set`)
 	}
-	gp, err := games.NewS3Persistence(bucket)
+	c, err := s3.NewClient(bucket)
+	if err != nil {
+		return err
+	}
+	gp := &persistence.S3Persistence{
+		KeyFmt:      `games/%d`,
+		Client:      c,
+		IdGenerator: games.TimeStampIdGenerator{},
+	}
 	if err != nil {
 		return err
 	}
