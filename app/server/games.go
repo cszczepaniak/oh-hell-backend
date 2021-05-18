@@ -1,7 +1,6 @@
 package server
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 
@@ -16,17 +15,14 @@ func (s *Server) AddGamesRoutes() {
 }
 
 func (s *Server) handleSaveGame(c *gin.Context) {
-	log.Println(`inside of save game handler`)
 	var g games.Game
 	err := c.BindJSON(&g)
 	if err != nil {
-		log.Println(err)
 		c.String(400, `invalid game in body: %s`, err)
 		return
 	}
 	id, err := s.Persistence.Games.Create(g)
 	if err != nil {
-		log.Println(err)
 		c.String(400, `error saving game: %s`, err)
 		return
 	}
