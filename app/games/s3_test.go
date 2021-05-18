@@ -20,7 +20,7 @@ func TestS3Persistence_Save(t *testing.T) {
 		`games/%d`, `games/123`, Game{Id: 123}, false,
 	}}
 	for _, tc := range tests {
-		testGamePersistence, fakeS3 := setupFakePersistence(tc.game.Id, tc.keyFmt)
+		testGamePersistence, fakeS3 := setupPersistenceWithFakeDeps(tc.game.Id, tc.keyFmt)
 		fakeS3.SetupUpload(tc.keySetup)
 		err := testGamePersistence.Save(tc.game)
 		if tc.expErr {
@@ -43,7 +43,7 @@ func TestS3Persistence_Create(t *testing.T) {
 		`games/%d`, `games/1111`, 123, true,
 	}}
 	for _, tc := range tests {
-		testGamePersistence, fakeS3 := setupFakePersistence(tc.id, tc.keyFmt)
+		testGamePersistence, fakeS3 := setupPersistenceWithFakeDeps(tc.id, tc.keyFmt)
 		fakeS3.SetupUpload(tc.keySetup)
 		id, err := testGamePersistence.Create(Game{})
 		if tc.expErr {
@@ -68,7 +68,7 @@ func TestS3Persistence_Get(t *testing.T) {
 		`games/%d`, `games/123`, Game{Id: 123, Dealer: `hello`}, 111, true,
 	}}
 	for _, tc := range tests {
-		testGamePersistence, fakeS3 := setupFakePersistence(tc.id, tc.keyFmt)
+		testGamePersistence, fakeS3 := setupPersistenceWithFakeDeps(tc.id, tc.keyFmt)
 		err := fakeS3.SetupDownload(tc.keySetup, tc.gameSetup)
 		require.Nil(t, err)
 
@@ -83,7 +83,7 @@ func TestS3Persistence_Get(t *testing.T) {
 	}
 }
 
-func setupFakePersistence(id int64, keyFmt string) (*S3Persistence, *s3.FakeClient) {
+func setupPersistenceWithFakeDeps(id int64, keyFmt string) (*S3Persistence, *s3.FakeClient) {
 	fakeS3 := s3.NewFakeClient()
 	idGen := &FakeIdGenerator{
 		Id: id,
