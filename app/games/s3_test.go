@@ -22,7 +22,7 @@ func TestS3Persistence_Save(t *testing.T) {
 	for _, tc := range tests {
 		testGamePersistence, fakeS3 := setupFakePersistence(tc.id, tc.keyFmt)
 		fakeS3.SetupUpload(tc.keySetup)
-		id, err := testGamePersistence.Save(Game{})
+		id, err := testGamePersistence.Create(Game{})
 		if tc.expErr {
 			assert.NotNil(t, err)
 			assert.Equal(t, int64(-1), id)

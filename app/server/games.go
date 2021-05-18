@@ -24,7 +24,7 @@ func (s *Server) handleSaveGame(c *gin.Context) {
 		c.String(400, `invalid game in body: %s`, err)
 		return
 	}
-	id, err := s.Persistence.Games.Save(g)
+	id, err := s.Persistence.Games.Create(g)
 	if err != nil {
 		log.Println(err)
 		c.String(400, `error saving game: %s`, err)

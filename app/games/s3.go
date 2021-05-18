@@ -25,7 +25,7 @@ type S3Persistence struct {
 
 var _ GamePersistence = (*S3Persistence)(nil)
 
-func (sp *S3Persistence) Save(g Game) (int64, error) {
+func (sp *S3Persistence) Create(g Game) (int64, error) {
 	g.Id = sp.IdGenerator.NextId()
 	err := sp.Client.UploadJSON(sp.getGameKey(g.Id), g)
 	if err != nil {
