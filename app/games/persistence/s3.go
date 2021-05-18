@@ -14,11 +14,15 @@ type S3Persistence struct {
 	IdGenerator games.IdGenerator
 }
 
+var (
+	ErrMissingId = errors.New(`must set ID before saving game`)
+)
+
 var _ GamePersistence = (*S3Persistence)(nil)
 
 func (sp *S3Persistence) Save(g games.Game) error {
 	if g.Id == 0 {
-		return errors.New(`must set ID before saving game`)
+		return ErrMissingId
 	}
 	return sp.put(g)
 }

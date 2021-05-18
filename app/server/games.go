@@ -10,11 +10,11 @@ import (
 
 func (s *Server) AddGamesRoutes() {
 	rg := s.Router.Group(`/games`)
-	rg.POST(``, s.handleSaveGame)
+	rg.POST(``, s.handleCreateGame)
 	rg.GET(`/:id`, s.handleGetGame)
 }
 
-func (s *Server) handleSaveGame(c *gin.Context) {
+func (s *Server) handleCreateGame(c *gin.Context) {
 	var g games.Game
 	err := c.BindJSON(&g)
 	if err != nil {
