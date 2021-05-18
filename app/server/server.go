@@ -1,8 +1,6 @@
 package server
 
 import (
-	"net/http"
-
 	"github.com/cszczepaniak/oh-hell-backend/games/persistence"
 	"github.com/gin-gonic/gin"
 	cors "github.com/rs/cors/wrapper/gin"
@@ -30,16 +28,6 @@ func (s *Server) ConfigureRoutes() {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
-	})
-	s.Router.POST("/echo", func(c *gin.Context) {
-		var msg struct {
-			Message string `json:"message,omitempty"`
-		}
-		err := c.BindJSON(&msg)
-		if err != nil {
-			c.String(http.StatusInternalServerError, err.Error())
-		}
-		c.String(http.StatusOK, msg.Message)
 	})
 	s.AddGamesRoutes()
 }
