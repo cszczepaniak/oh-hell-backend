@@ -12,6 +12,29 @@ func TestS3Persistence_Save(t *testing.T) {
 	tests := []struct {
 		keyFmt   string
 		keySetup string
+		game     Game
+		expErr   bool
+	}{{
+		`games/%d`, `games/123`, Game{}, true,
+	}, {
+		`games/%d`, `games/123`, Game{Id: 123}, false,
+	}}
+	for _, tc := range tests {
+		testGamePersistence, fakeS3 := setupFakePersistence(tc.game.Id, tc.keyFmt)
+		fakeS3.SetupUpload(tc.keySetup)
+		err := testGamePersistence.Save(tc.game)
+		if tc.expErr {
+			assert.NotNil(t, err)
+			continue
+		}
+		assert.Nil(t, err)
+	}
+}
+
+func TestS3Persistence_Create(t *testing.T) {
+	tests := []struct {
+		keyFmt   string
+		keySetup string
 		id       int64
 		expErr   bool
 	}{{
@@ -26,7 +49,7 @@ func TestS3Persistence_Save(t *testing.T) {
 		if tc.expErr {
 			assert.NotNil(t, err)
 			assert.Equal(t, int64(0), id)
-			return
+			continue
 		}
 		assert.Nil(t, err)
 		assert.Equal(t, tc.id, id)
@@ -53,7 +76,7 @@ func TestS3Persistence_Get(t *testing.T) {
 		if tc.expErr {
 			assert.NotNil(t, err)
 			assert.Equal(t, Game{}, g)
-			return
+			continue
 		}
 		assert.Nil(t, err)
 		assert.Equal(t, tc.gameSetup, g)
