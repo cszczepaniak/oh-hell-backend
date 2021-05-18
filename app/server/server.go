@@ -24,11 +24,6 @@ func New(gp persistence.GamePersistence) *Server {
 }
 
 func (s *Server) ConfigureRoutes() {
-	s.Router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
 	s.AddGamesRoutes()
 }
 
