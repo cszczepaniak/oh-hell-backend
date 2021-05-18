@@ -29,7 +29,7 @@ func (sp *S3Persistence) Create(g Game) (int64, error) {
 	g.Id = sp.IdGenerator.NextId()
 	err := sp.Client.UploadJSON(sp.getGameKey(g.Id), g)
 	if err != nil {
-		return -1, err
+		return 0, err
 	}
 	return g.Id, nil
 }

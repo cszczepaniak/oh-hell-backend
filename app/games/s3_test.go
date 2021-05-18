@@ -25,7 +25,7 @@ func TestS3Persistence_Save(t *testing.T) {
 		id, err := testGamePersistence.Create(Game{})
 		if tc.expErr {
 			assert.NotNil(t, err)
-			assert.Equal(t, int64(-1), id)
+			assert.Equal(t, int64(0), id)
 			return
 		}
 		assert.Nil(t, err)
