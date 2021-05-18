@@ -3,7 +3,7 @@ package server
 import (
 	"net/http"
 
-	"github.com/cszczepaniak/oh-hell-backend/games"
+	"github.com/cszczepaniak/oh-hell-backend/games/persistence"
 	"github.com/gin-gonic/gin"
 	cors "github.com/rs/cors/wrapper/gin"
 )
@@ -13,7 +13,7 @@ type Server struct {
 	Persistence Persistence
 }
 
-func New(gp games.GamePersistence) *Server {
+func New(gp persistence.GamePersistence) *Server {
 	r := gin.Default()
 	c := cors.AllowAll()
 	r.Use(c)
@@ -45,5 +45,5 @@ func (s *Server) ConfigureRoutes() {
 }
 
 type Persistence struct {
-	Games games.GamePersistence
+	Games persistence.GamePersistence
 }
