@@ -22,5 +22,6 @@ require (
 	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/labstack/echo v3.3.10+incompatible // indirect
 	github.com/rs/cors v1.7.0 // indirect
+	github.com/stretchr/testify v1.7.0 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 )
