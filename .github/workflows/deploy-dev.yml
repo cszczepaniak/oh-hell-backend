@@ -29,3 +29,5 @@ jobs:
         env:
           AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}
           CODE_BUCKET_NAME: oh-hell-backend-artifacts
+          SSL_CERT_ARN: ${{ secrets.SSL_CERT_ARN }}
+          HOSTED_ZONE_ID: ${{ secrets.HOSTED_ZONE_ID }}
