@@ -22,11 +22,21 @@ func TestCreateGame(t *testing.T) {
 		body      interface{}
 		expStatus int
 	}{{
-		`games/123`, 123, games.Game{Dealer: `hi`}, http.StatusOK,
+		`games/123`, 123, games.ValidGame, http.StatusOK,
 	}, {
 		`games/123`, 123, 123, http.StatusBadRequest,
 	}, {
-		`games/123`, 111, games.Game{Dealer: `hi`}, http.StatusInternalServerError,
+		`games/123`, 123, games.NoPlayersGame, http.StatusBadRequest,
+	}, {
+		`games/123`, 123, games.TooFewPlayersGame, http.StatusBadRequest,
+	}, {
+		`games/123`, 123, games.TooManyPlayersGame, http.StatusBadRequest,
+	}, {
+		`games/123`, 123, games.DuplicatePlayerGame, http.StatusBadRequest,
+	}, {
+		`games/123`, 123, games.InvalidDealerGame, http.StatusBadRequest,
+	}, {
+		`games/123`, 111, games.ValidGame, http.StatusInternalServerError,
 	}}
 	for _, tc := range tests {
 		bs, err := json.Marshal(tc.body)
