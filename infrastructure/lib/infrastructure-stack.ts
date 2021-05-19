@@ -2,6 +2,7 @@ import { LambdaRestApi } from "@aws-cdk/aws-apigateway";
 import { Code, Function, Runtime } from "@aws-cdk/aws-lambda";
 import { Bucket } from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
+import { ApiGatewayStack } from "./api-gateway-stack";
 
 export class InfrastructureStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -30,11 +31,6 @@ export class InfrastructureStack extends cdk.Stack {
 
     dataBucket.grantReadWrite(lambda);
 
-    new LambdaRestApi(this, `${id}-api`, {
-      handler: lambda,
-      deployOptions: {
-        stageName: "dev",
-      },
-    });
+    new ApiGatewayStack(this, `${id}-api-gateway-stack`, { lambda });
   }
 }
