@@ -1,10 +1,15 @@
 package games
 
 type Game struct {
-	Id       int64    `json:"id,omitempty"`
-	Dealer   string   `json:"dealer,omitempty"`
-	Players  []Player `json:"players,omitempty"`
-	Settings Settings `json:"settings,omitempty"`
+	Id           int64    `json:"id,omitempty"`
+	Dealer       string   `json:"dealer,omitempty"`
+	Players      []Player `json:"players,omitempty"`
+	Settings     Settings `json:"settings,omitempty"`
+	MaxRounds    int      `json:"maxRounds,omitempty"`
+	MaxCards     int      `json:"maxCards,omitempty"`
+	Round        int      `json:"round,omitempty"`
+	Cards        int      `json:"cards,omitempty"`
+	IsBonusRound int      `json:"isBonusRound,omitempty"`
 }
 
 //go:generate stringer -type=ScoringMode -output=scoringmode_string.g.go
@@ -16,8 +21,8 @@ const (
 )
 
 type Settings struct {
-	BonusRounds bool        `json:"bonus_rounds,omitempty"`
-	ScoringMode ScoringMode `json:"scoring_mode,omitempty"`
+	BonusRounds bool        `json:"bonusRounds,omitempty"`
+	ScoringMode ScoringMode `json:"scoringMode,omitempty"`
 }
 
 type Player struct {
