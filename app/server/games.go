@@ -21,6 +21,12 @@ func (s *Server) handleCreateGame(c *gin.Context) {
 		c.String(http.StatusBadRequest, `invalid game in body: %s`, err)
 		return
 	}
+	err = g.Validate()
+	if err != nil {
+		c.String(http.StatusBadRequest, `invalid game in body: %s`, err)
+		return
+	}
+
 	id, err := s.Persistence.Games.Create(g)
 	if err != nil {
 		c.String(http.StatusInternalServerError, `error saving game: %s`, err)

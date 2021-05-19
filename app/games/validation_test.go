@@ -13,26 +13,17 @@ func TestGame_Validate(t *testing.T) {
 	}{{
 		Game{}, ErrInvalidNumPlayers,
 	}, {
-		Game{Players: make([]Player, 2)}, ErrInvalidNumPlayers,
+		NoPlayersGame, ErrInvalidNumPlayers,
 	}, {
-		Game{Players: make([]Player, 11)}, ErrInvalidNumPlayers,
+		TooFewPlayersGame, ErrInvalidNumPlayers,
 	}, {
-		Game{
-			Players: []Player{{Name: `a`}, {Name: `b`}, {Name: `b`}},
-		},
-		ErrDuplicatePlayer,
+		TooManyPlayersGame, ErrInvalidNumPlayers,
 	}, {
-		Game{
-			Dealer:  `d`,
-			Players: []Player{{Name: `a`}, {Name: `b`}, {Name: `c`}},
-		},
-		ErrInvalidDealer,
+		DuplicatePlayerGame, ErrDuplicatePlayer,
 	}, {
-		Game{
-			Dealer:  `c`,
-			Players: []Player{{Name: `a`}, {Name: `b`}, {Name: `c`}},
-		},
-		nil,
+		InvalidDealerGame, ErrInvalidDealer,
+	}, {
+		ValidGame, nil,
 	}}
 	for _, tc := range tests {
 		err := tc.g.Validate()
