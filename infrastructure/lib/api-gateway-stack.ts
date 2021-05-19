@@ -28,7 +28,7 @@ export class ApiGatewayStack extends cdk.Stack {
     );
 
     const customDomain = new DomainName(this, "customDomain", {
-      domainName: "api.oh-hell.com",
+      domainName: "api.oh-heck.com",
       certificate: cert,
       endpointType: EndpointType.REGIONAL,
     });
