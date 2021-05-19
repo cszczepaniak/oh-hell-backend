@@ -6,4 +6,4 @@ cd infrastructure/
 npm i
 cdk bootstrap aws://$AWS_ACCOUNT_NUMBER/us-east-2
 cdk synth
-cdk deploy --require-approval=never
+cdk deploy --require-approval=never --all
