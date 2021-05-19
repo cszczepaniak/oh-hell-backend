@@ -26,7 +26,8 @@ func (s *Server) handleCreateGame(c *gin.Context) {
 		c.String(http.StatusInternalServerError, `error saving game: %s`, err)
 		return
 	}
-	c.String(http.StatusOK, `saved game: %d`, id)
+	g.Id = id
+	c.JSON(http.StatusOK, g)
 }
 
 func (s *Server) handleGetGame(c *gin.Context) {

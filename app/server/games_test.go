@@ -39,6 +39,12 @@ func TestCreateGame(t *testing.T) {
 		s.Router.ServeHTTP(rec, req)
 
 		assert.Equal(t, tc.expStatus, rec.Code)
+		if tc.expStatus < 400 {
+			var g games.Game
+			err := unmarshalBody(rec, &g)
+			require.Nil(t, err)
+			assert.Equal(t, tc.id, g.Id)
+		}
 	}
 }
 
@@ -67,6 +73,12 @@ func TestGetGame(t *testing.T) {
 		s.Router.ServeHTTP(rec, req)
 
 		assert.Equal(t, tc.expStatus, rec.Code)
+		if tc.expStatus < 400 {
+			var g games.Game
+			err := unmarshalBody(rec, &g)
+			require.Nil(t, err)
+			assert.Equal(t, tc.id, g.Id)
+		}
 	}
 }
 
@@ -83,6 +95,11 @@ func setupTestServer(id int64, keyFmt string) (*Server, *s3.FakeClient) {
 	s := New(p)
 	s.AddGamesRoutes()
 	return s, fakeS3
+}
+
+func unmarshalBody(rec *httptest.ResponseRecorder, v interface{}) error {
+	bs := rec.Body.Bytes()
+	return json.Unmarshal(bs, v)
 }
 
 type FakeIdGenerator struct {
